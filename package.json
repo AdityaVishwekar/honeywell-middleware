@@ -1,0 +1,54 @@
+{
+  "name": "vutil",
+  "description": "vREST Utility",
+  "version": "0.0.6",
+  "main": "index.js",
+  "dependencies": {
+    "csvtojson": "^1.1.4",
+    "dicer": "^0.2.5",
+    "mongodb": "^2.2.25",
+    "mssql": "^3.3.0",
+    "mysql": "^2.13.0",
+    "pg": "^6.1.5",
+    "request": "^2.81.0",
+    "restify": "^4.3.4",
+    "ssh2shell": "^1.9.1",
+    "stream-buffers": "^3.0.1",
+    "xmldom": "0.1.27"
+  },
+  "bin": {
+    "vutil-server": "server.js"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/vrest-io/vutil/blob/master/LICENSE-MIT"
+    }
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:vrest-io/vutil.git"
+  },
+  "keywords": [
+    "vrest",
+    "util",
+    "api",
+    "upload",
+    "server",
+    "convert",
+    "execute",
+    "db",
+    "query"
+  ],
+  "author": {
+    "name": "vREST Team",
+    "email": "team@vrest.io"
+  },
+  "homepage": "https://github.com/vrest-io/vutil"
+}

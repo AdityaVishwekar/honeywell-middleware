@@ -1,0 +1,112 @@
+---
+# Copyright (c) 2018, Oracle and/or its affiliates.
+# This software is made available to you under the terms of the GPL 3.0 license or the Apache 2.0 license.
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# Apache License v2.0
+# See LICENSE.TXT for details.
+
+- name: Launch a compute instance and connect to it using SSH
+  hosts: localhost
+  vars:
+    # common networking definitions
+    quad_zero_route: "0.0.0.0/0"
+    TCP_protocol: "6"
+    SSH_port: "22"
+    RDP_port: "3389"
+
+    vcn_name: "mytestvcn"
+    vcn_cidr_block: "10.0.0.0/16"
+    vcn_dns_label: "mytestvcn"
+
+    ig_name: "myinternetgatewayformytestvcn"
+
+    route_table_name: "myroutetable"
+    # route all internet access to our Internet Gateway
+    route_table_rules:
+        - cidr_block: "{{ quad_zero_route }}"
+          network_entity_id: "{{ ig_id }}"
+
+
+    subnet_cidr: "10.0.0.48/28"
+    subnet_name: "mytestsubnet"
+    subnet_dns_label: "mytestsubnet"
+
+    securitylist_name: "mysecuritylist"
+
+    instance_shape: "VM.Standard2.1"
+    instance_hostname: "mytestinstance"
+
+    #########################################
+    # Tenancy specific configuration
+    # *Note* - Override the following variables based on your tenancy
+    # or set a valid value for the corresponding environment variable 
+    #########################################
+    instance_ad: "XVPM:US-ASHBURN-AD-2"
+    instance_compartment: "ocid1.compartment.oc1..aaaaaaaa225dj5immd2ure6ijtko4navv5d26bpt6onnsiuul7rbgtqvphsa"
+    # provide an "OEL" image
+    instance_image: "ocid1.image.oc1.iad.aaaaaaaamjrkigt6tdtfq2ovkaosmuyksbqd4y562chfd7qg4ujxpv7fe6pa"
+
+  tasks:
+    - import_tasks: setup.yaml
+
+    - name: Launch an instance
+      oci_instance:
+        availability_domain: "{{ instance_ad }}"
+        compartment_id: "{{ instance_compartment }}"
+        name: "{{ instance_name }}"
+        image_id: "{{ instance_image }}"
+        shape: "{{ instance_shape }}"
+        vnic:
+            assign_public_ip: True
+            hostname_label: "{{ instance_hostname }}"
+            subnet_id: "{{ instance_subnet_id }}"
+        metadata:
+            ssh_authorized_keys: "{{ lookup('file',  my_test_public_key ) }}"
+      register: result
+
+    - name: Print instance details
+      debug:
+        msg: "Launched a new instance {{ result }}"
+    - set_fact:
+        instance_id: "{{result.instance.id }}"
+
+    - name: Get the VNIC attachment details of instance
+      oci_vnic_attachment_facts:
+        compartment_id: "{{ instance_compartment }}"
+        instance_id: "{{ instance_id }}"
+      register: result
+
+    - name: Get details of the VNIC
+      oci_vnic_facts:
+        id: "{{ result.vnic_attachments[0].vnic_id }}"
+      register: result
+    - set_fact:
+        instance_public_ip: "{{result.vnic.public_ip}}"
+
+    - name: Print the public ip of the newly launched instance
+      debug:
+        msg: "Public IP of launched instance {{ instance_public_ip }}"
+
+    - name: Create a zone
+      oci_zone:
+        compartment_id: "{{ instance_compartment }}"
+        name: "{{domain_name}}"
+        zone_type: PRIMARY
+      register: result
+    - set_fact:
+        zone_id: "{{ result.zone.id }}"
+
+    - name: Patch a zone's record
+      oci_zone_records:
+        name: "{{domain_name}}"
+        patch_items: [{
+          domain: "{{domain_name}}",
+          is_protected: false,
+          rdata: "{{instance_public_ip}}",
+          rtype: "A",
+          ttl: 30,
+          operation: "ADD"
+        }]
+
+    #- import_tasks: teardown.yaml
+

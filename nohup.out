@@ -1,0 +1,296 @@
+
+> vutil@0.0.6 start /home/ubuntu/middleware
+> node server.js
+
+vutil@0.0.6 listening at http://[::]:3001
+Command executed on shell: hello
+
+Command executed on shell: hello
+
+Command executed on shell: total 128
+-rw-rw-r--   1 ubuntu ubuntu  1880 Oct 31 15:48 config.json
+-rw-rw-r--   1 ubuntu ubuntu  1054 Oct 31 15:48 LICENSE-MIT
+drwxrwxr-x   8 ubuntu ubuntu  4096 Oct 31 15:48 modules
+drwxrwxr-x 155 ubuntu ubuntu  4096 Oct 31 15:50 node_modules
+-rw-------   1 ubuntu ubuntu   173 Dec  3 19:55 nohup.out
+-rw-rw-r--   1 ubuntu ubuntu  1048 Oct 31 15:50 package.json
+-rw-rw-r--   1 ubuntu ubuntu 50375 Oct 31 15:48 package-lock.json
+-rw-rw-r--   1 ubuntu ubuntu   893 Oct 31 19:32 README.md
+-rw-rw-r--   1 ubuntu ubuntu  1678 Oct 31 15:48 rsaa
+-rw-rw-r--   1 ubuntu ubuntu    10 Dec  3 19:54 sample.retry
+-rw-rw-r--   1 ubuntu ubuntu  3560 Oct 31 22:18 sample.yaml
+-rw-rw-r--   1 ubuntu ubuntu  2148 Oct 31 15:51 server.js
+-rw-rw-r--   1 ubuntu ubuntu  4321 Oct 31 19:32 setup.yaml
+-rw-rw-r--   1 ubuntu ubuntu   889 Oct 31 19:32 teardown.yaml
+drwxrwxr-x   2 ubuntu ubuntu  4096 Oct 31 22:11 templates
+-rw-rw-r--   1 ubuntu ubuntu  2713 Oct 31 15:48 utils.js
+-rw-rw-r--   1 ubuntu ubuntu   698 Oct 31 15:48 vars.json
+-rw-rw-r--   1 ubuntu ubuntu  5920 Oct 31 15:48 vutil-swagger.yaml
+
+
+> vutil@0.0.6 start /home/ubuntu/middleware
+> node server.js
+
+vutil@0.0.6 listening at http://[::]:3001
+Command executed on shell: total 128
+-rw-rw-r--   1 ubuntu ubuntu  1880 Oct 31 15:48 config.json
+-rw-rw-r--   1 ubuntu ubuntu  1054 Oct 31 15:48 LICENSE-MIT
+drwxrwxr-x   8 ubuntu ubuntu  4096 Oct 31 15:48 modules
+drwxrwxr-x 155 ubuntu ubuntu  4096 Oct 31 15:50 node_modules
+-rw-------   1 ubuntu ubuntu  1389 Dec  3 20:00 nohup.out
+-rw-rw-r--   1 ubuntu ubuntu  1048 Oct 31 15:50 package.json
+-rw-rw-r--   1 ubuntu ubuntu 50375 Oct 31 15:48 package-lock.json
+-rw-rw-r--   1 ubuntu ubuntu   893 Oct 31 19:32 README.md
+-rw-rw-r--   1 ubuntu ubuntu  1678 Oct 31 15:48 rsaa
+-rw-rw-r--   1 ubuntu ubuntu    10 Dec  3 19:54 sample.retry
+-rw-rw-r--   1 ubuntu ubuntu  3557 Dec  3 19:57 sample.yaml
+-rw-rw-r--   1 ubuntu ubuntu  2148 Oct 31 15:51 server.js
+-rw-rw-r--   1 ubuntu ubuntu  4321 Oct 31 19:32 setup.yaml
+-rw-rw-r--   1 ubuntu ubuntu   889 Oct 31 19:32 teardown.yaml
+drwxrwxr-x   2 ubuntu ubuntu  4096 Oct 31 22:11 templates
+-rw-rw-r--   1 ubuntu ubuntu  2713 Oct 31 15:48 utils.js
+-rw-rw-r--   1 ubuntu ubuntu   698 Oct 31 15:48 vars.json
+-rw-rw-r--   1 ubuntu ubuntu  5920 Oct 31 15:48 vutil-swagger.yaml
+
+ [WARNING]: provided hosts list is empty, only localhost is available. Note
+that the implicit localhost does not match 'all'
+
+PLAY [Launch a compute instance and connect to it using SSH] *******************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create a temporary directory to house a temporary SSH keypair we will later use to connect to instance] ***
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Generate a Private Key] **************************************************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Generate a Public Key] ***************************************************
+changed: [localhost]
+
+TASK [Create a VCN] ************************************************************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create a new Internet Gateway] *******************************************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create route table to connect internet gateway to the VCN] ***************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [create ingress rules yaml body] ******************************************
+ok: [localhost]
+
+TASK [create egress yaml body] *************************************************
+ok: [localhost]
+
+TASK [load the variables defined in the ingress rules yaml body] ***************
+ok: [localhost]
+
+TASK [print loaded_ingress] ****************************************************
+ok: [localhost] => {
+    "msg": "loaded ingress is {u'instance_ingress_security_rules': [{u'source': u'0.0.0.0/0', u'protocol': u'6', u'tcp_options': {u'destination_port_range': {u'max': 22, u'min': 22}}}, {u'source': u'0.0.0.0/0', u'protocol': u'6', u'tcp_options': {u'destination_port_range': {u'max': 3389, u'min': 3389}}}]}"
+}
+
+TASK [load the variables defined in the egress rules yaml body] ****************
+ok: [localhost]
+
+TASK [print loaded_egress] *****************************************************
+ok: [localhost] => {
+    "msg": "loaded egress is {u'instance_egress_security_rules': [{u'tcp_options': {u'destination_port_range': {u'max': 22, u'min': 22}}, u'destination': u'0.0.0.0/0', u'protocol': u'6'}, {u'is_stateless': True, u'destination': u'0.0.0.0/0', u'protocol': u'all'}]}"
+}
+
+TASK [Create a security list for allowing access to public instance] ***********
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create a subnet to host the public instance. Link security_list and route_table.] ***
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Launch an instance] ******************************************************
+ [WARNING]: provided hosts list is empty, only localhost is available. Note
+that the implicit localhost does not match 'all'
+
+PLAY [Launch a compute instance and connect to it using SSH] *******************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create a temporary directory to house a temporary SSH keypair we will later use to connect to instance] ***
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Generate a Private Key] **************************************************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Generate a Public Key] ***************************************************
+changed: [localhost]
+
+TASK [Create a VCN] ************************************************************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create a new Internet Gateway] *******************************************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create route table to connect internet gateway to the VCN] ***************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [create ingress rules yaml body] ******************************************
+ok: [localhost]
+
+TASK [create egress yaml body] *************************************************
+ok: [localhost]
+
+TASK [load the variables defined in the ingress rules yaml body] ***************
+ok: [localhost]
+
+TASK [print loaded_ingress] ****************************************************
+ok: [localhost] => {
+    "msg": "loaded ingress is {u'instance_ingress_security_rules': [{u'source': u'0.0.0.0/0', u'protocol': u'6', u'tcp_options': {u'destination_port_range': {u'max': 22, u'min': 22}}}, {u'source': u'0.0.0.0/0', u'protocol': u'6', u'tcp_options': {u'destination_port_range': {u'max': 3389, u'min': 3389}}}]}"
+}
+
+TASK [load the variables defined in the egress rules yaml body] ****************
+ok: [localhost]
+
+TASK [print loaded_egress] *****************************************************
+ok: [localhost] => {
+    "msg": "loaded egress is {u'instance_egress_security_rules': [{u'tcp_options': {u'destination_port_range': {u'max': 22, u'min': 22}}, u'destination': u'0.0.0.0/0', u'protocol': u'6'}, {u'is_stateless': True, u'destination': u'0.0.0.0/0', u'protocol': u'all'}]}"
+}
+
+TASK [Create a security list for allowing access to public instance] ***********
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create a subnet to host the public instance. Link security_list and route_table.] ***
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Launch an instance] ******************************************************
+ [WARNING]: provided hosts list is empty, only localhost is available. Note
+that the implicit localhost does not match 'all'
+
+PLAY [Launch a compute instance and connect to it using SSH] *******************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Create a temporary directory to house a temporary SSH keypair we will later use to connect to instance] ***
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Generate a Private Key] **************************************************
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Generate a Public Key] ***************************************************
+changed: [localhost]
+
+TASK [Create a VCN] ************************************************************
+ok: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create a new Internet Gateway] *******************************************
+ok: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create route table to connect internet gateway to the VCN] ***************
+ok: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [create ingress rules yaml body] ******************************************
+ok: [localhost]
+
+TASK [create egress yaml body] *************************************************
+ok: [localhost]
+
+TASK [load the variables defined in the ingress rules yaml body] ***************
+ok: [localhost]
+
+TASK [print loaded_ingress] ****************************************************
+ok: [localhost] => {
+    "msg": "loaded ingress is {u'instance_ingress_security_rules': [{u'source': u'0.0.0.0/0', u'protocol': u'6', u'tcp_options': {u'destination_port_range': {u'max': 22, u'min': 22}}}, {u'source': u'0.0.0.0/0', u'protocol': u'6', u'tcp_options': {u'destination_port_range': {u'max': 3389, u'min': 3389}}}]}"
+}
+
+TASK [load the variables defined in the egress rules yaml body] ****************
+ok: [localhost]
+
+TASK [print loaded_egress] *****************************************************
+ok: [localhost] => {
+    "msg": "loaded egress is {u'instance_egress_security_rules': [{u'tcp_options': {u'destination_port_range': {u'max': 22, u'min': 22}}, u'destination': u'0.0.0.0/0', u'protocol': u'6'}, {u'is_stateless': True, u'destination': u'0.0.0.0/0', u'protocol': u'all'}]}"
+}
+
+TASK [Create a security list for allowing access to public instance] ***********
+changed: [localhost]
+
+TASK [set_fact] ****************************************************************
+ok: [localhost]
+
+TASK [Create a subnet to host the public instance. Link security_list and route_table.] ***
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "{'status': 400, 'message': u'The requested CIDR 10.0.0.48/28 is invalid: subnet ocid1.subnet.oc1.iad.aaaaaaaasy5ympyx3ag4e2aw5ozbg6cwg2utacl7rdjgh76mt76lzowhsdgq with CIDR 10.0.0.48/28 overlaps with this CIDR.', 'code': u'InvalidParameter', 'opc-request-id': 'A7E00C8B08634F82897FF806ED24E348/98B133197A9A2D57A331DD4069EB5B81/CED4F43063A44BB6B253A176E129DE9D'}"}
+	to retry, use: --limit @/home/ubuntu/middleware/sample.retry
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=20   changed=4    unreachable=0    failed=1   
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Maximum wait time has been exceeded."}
+	to retry, use: --limit @/home/ubuntu/middleware/sample.retry
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=22   changed=8    unreachable=0    failed=1   
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Maximum wait time has been exceeded."}
+	to retry, use: --limit @/home/ubuntu/middleware/sample.retry
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=22   changed=8    unreachable=0    failed=1   
+
+Command executed on shell: hello
+
